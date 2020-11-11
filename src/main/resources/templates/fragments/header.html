@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <div th:fragment="header-css">
+
+        <title>Spring Boot Forum</title>
+
+        <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+              th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+              rel="stylesheet" media="screen"/>
+
+        <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+                th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+        <link rel="stylesheet" th:href="@{/css/main.css}"
+              href="../../css/main.css"/>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/home}">Forum App</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse navbar-right">
+                <!-- register if not logged -->
+                <ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
+                    <li class="active"><a th:href="@{/registration}">Register</a></li>
+                </ul>
+                <!-- login if not logged-->
+                <ul class="nav navbar-nav" sec:authorize="!isAuthenticated()">
+                    <li class="active"><a th:href="@{/login}">Login</a></li>
+                </ul>
+                <!-- my posts if logged-->
+                <ul class="nav navbar-nav" sec:authorize="hasRole('USER')">
+                    <li class="active"><a th:href="@{'/blog/' + ${#authentication.getName()}}">My Posts</a></li>
+                </ul>
+                <!-- new post if logged-->
+                <ul class="nav navbar-nav" sec:authorize="hasRole('USER')">
+                    <li class="active"><a th:href="@{/newPost}">New Post</a></li>
+                </ul>
+                <!-- sign out if user is logged -->
+                <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+                    <li class="active"><a th:href="@{/logout}">Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>
